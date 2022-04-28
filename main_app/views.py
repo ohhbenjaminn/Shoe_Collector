@@ -1,7 +1,13 @@
 from django.shortcuts import render
 
+#import the CreateView class
+from django.views.generic.edit import CreateView
+from django.http import HttpResponse #res.send in express
 from .models import Shoe
 
+class ShoeCreate(CreateView):
+  model = Shoe
+  fields = '__all__'
 
 # Define the home view
 def home(request):
@@ -17,3 +23,4 @@ def shoes_index(request):
 def shoes_detail(request, shoe_id):
   shoe = Shoe.objects.get(id=shoe_id)
   return render(request, 'shoes/detail.html', { 'shoe': shoe })
+
