@@ -10,7 +10,8 @@ from .forms import ReleaseForm
 
 class ShoeCreate(CreateView):
   model = Shoe
-  fields = '__all__'
+  fields = ['name', 'brand', 'description', 'size']
+  # '__all__'
 
 class ShoeUpdate(UpdateView):
     model = Shoe
