@@ -16,9 +16,11 @@
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Shoe Collector</a></li>
         </ul>
         <ul class="right">
-            <li><a href="/about">About</a></li>
-            <li><a href="{% url 'shoes_create' %}">Add A Shoe</a></li>
-            <li><a href="/shoes">Shoe Collection</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'accessories_create' %}">Add a Accessory</a></li>
+          <li><a href="{% url 'accessories_index' %}">View All Accessories</a></li>
+          <li><a href="{% url 'shoes_create' %}">Add a Shoe</a></li>
+          <li><a href="{% url 'index' %}">View All My Shoes</a></li>
         </ul>
       </div>
     </nav>

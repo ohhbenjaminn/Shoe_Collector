@@ -1,22 +1,108 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
 
 <h1>Shoe Details</h1>
-    
-<div class="card">
-    <div class="card-content">
-      <span class="card-title">{{ shoe.name }}</span>
-      <p>Brand: {{ shoe.brand }}</p>
-      <p>Description: {{ shoe.description }}</p>
-      {% if shoe.size > 0 %}
-        <p>Size: {{ shoe.size }}</p>
-      {% else %}
-        <p>Size: Unknown</p>
-      {% endif %}
-    </div>
+
+<div class="row">
+	<div class="col s6">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title">{{ shoe.name }}</span>
+				<p>Brand: {{ shoe.brand }}</p>
+				<p>Description: {{ shoe.description }}</p>
+				{% if shoe.size > 0 %}
+				<p>Size: {{ shoe.size }}</p>
+				{% else %}
+				<p>Size: Unkown</p>
+				{% endif %}
+			</div>
+			<div class="card-action">
+				<a href="{% url 'shoes_update' shoe.id %}">Edit</a>
+				<a href="{% url 'shoes_delete' shoe.id %}">Delete</a>
+			</div>
+		</div>
+	</div>
+	<div class="col s6">
+		<form method="post" action="{% url 'add_release' shoe.id %}">
+			{% csrf_token %}
+			{{ release_form.as_p }}
+			<input type="submit" class="btn" value="Add Release">
+		</form>
+		<table class="striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Condition</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for release in shoe.release_set.all %}
+				<tr>
+					<td>{{release.date}}</td>
+					<td>{{release.get_condition_display}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
+<!-- This is all new markup to be added just above the <script> tag -->
+	<hr>
+	<div class="row">
+	  <div class="col s6">
+		<h3>{{ shoe.name }}'s Accessories</h3>
+		{% if shoe.accessories.count %}
+		  {% for shoe in shoe.accessories.all %}
+			<div class="card">
+			  <div class="card-content">
+				<span class="card-title">
+				  A <span style="color: {{ shoe.color }}">{{ accessory.color }}</span> {{ accessory.name }}
+				</span>
+			  </div>
+			</div>
+		  {% endfor %}
+		{% else %}
+		  <h5>No Accessories :(</h5>
+		{% endif %}
+	  </div>
+	  <!-- Available toys will come after this line -->
+  <div class="col s6">
+    <h3>Available Accessories</h3>
+    {% if accessories.count %}
+      {% for accessory in accessories.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ accessory.color }}">{{ accessory.color }}</span> {{ accessory.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_accessory' shoe.id accessory.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{shoe.name}} Already Has All Accessories Available</h5>
+    {% endif %}
+  </div>
+	</div>
+
+
+<script>
+	const dateEl = document.getElementById('id_date');
+	M.Datepicker.init(dateEl, {
+		format: 'yyyy-mm-dd',
+		defaultDate: new Date(),
+		setDefaultDate: true,
+		autoClose: true
+	})
+
+	const selectEl = document.getElementById('id_condition');
+	M.FormSelect.init(selectEl)
+</script>
+
 
 {% endblock %}
-    
