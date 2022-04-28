@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Shoe Details</h1>
+    
+<div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ shoe.name }}</span>
+      <p>Brand: {{ shoe.brand }}</p>
+      <p>Description: {{ shoe.description }}</p>
+      {% if shoe.size > 0 %}
+        <p>Size: {{ shoe.size }}</p>
+      {% else %}
+        <p>Size: Unknown</p>
+      {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+    
